@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Persona {
@@ -18,6 +19,9 @@ public class Persona {
     private Sesso sesso;
     @OneToMany(mappedBy = "persona")
     private List<Partecipazione> partecipazioni;
+
+    @ManyToMany
+    private Set<GaraDiAtletica> gareDiAtletica;
 
     public Persona() {
     }

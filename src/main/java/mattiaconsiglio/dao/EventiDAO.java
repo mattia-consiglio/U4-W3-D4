@@ -2,8 +2,13 @@ package mattiaconsiglio.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
+import mattiaconsiglio.entities.Concerto;
 import mattiaconsiglio.entities.Evento;
+import mattiaconsiglio.entities.GenereConcerto;
 import mattiaconsiglio.exceptions.EventNotFoundException;
+
+import java.util.List;
 
 public class EventiDAO {
     // DAO (Data Access Object)
@@ -18,7 +23,7 @@ public class EventiDAO {
         transaction.begin();
         em.persist(evento);
         transaction.commit();
-        System.out.println("Evento" + evento.getNome() + " salvato con successo!");
+        System.out.println("Evento " + evento.getNome() + " salvato con successo!");
     }
 
     public Evento getById(int id) throws EventNotFoundException {
@@ -36,5 +41,17 @@ public class EventiDAO {
         em.remove(evento);
         transaction.commit();
         System.out.println("Evento" + evento.getNome() + " eliminato con successo!");
+    }
+
+    public List<Concerto> getConcertiInStreaming(boolean inStreaming) {
+        TypedQuery<Concerto> query = em.createQuery("SELECT c FROM Concerto c WHERE c.inStreaming = :inStreaming", Concerto.class);
+        query.setParameter("inStreaming", inStreaming);
+        return query.getResultList();
+    }
+
+    public List<Concerto> getConcertiPerGenere(GenereConcerto genereConcerto) {
+        TypedQuery<Concerto> query = em.createQuery("SELECT c FROM Concerto c WHERE c.genere = :genereConcerto", Concerto.class);
+        query.setParameter("genereConcerto", genereConcerto);
+        return query.getResultList();
     }
 }

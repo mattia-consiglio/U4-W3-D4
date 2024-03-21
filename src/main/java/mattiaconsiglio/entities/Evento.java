@@ -6,25 +6,26 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "eventi")
-public class Evento {
+public abstract class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    protected long id;
 
-    private String nome;
-    private LocalDate dataEvento;
-    private String descrizione;
+    protected String nome;
+    protected LocalDate dataEvento;
+    protected String descrizione;
     @Enumerated(EnumType.STRING)
-    private TipoEvento tipoEvento;
-    private int numeroMassimoPartecipanti;
+    protected TipoEvento tipoEvento;
+    protected int numeroMassimoPartecipanti;
 
     @OneToMany(mappedBy = "evento")
-    private List<Partecipazione> partecipazioni;
+    protected List<Partecipazione> partecipazioni;
 
     @ManyToOne
     @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    protected Location location;
 
     public Evento() {
     }
